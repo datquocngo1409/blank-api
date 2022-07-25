@@ -50,8 +50,10 @@ public class JwtAuthenController {
     public ResponseEntity<?> saveUser(@RequestBody RequestUser user) throws Exception {
         List<User> users = userService.findAll();
         boolean isExit = false;
-        for (User userFor : users) {
-            if (userFor.getUsername().equals(user.getUsername())) isExit = true;
+        if (users.size() > 0) {
+            for (User userFor : users) {
+                if (userFor.getUsername().equals(user.getUsername())) isExit = true;
+            }
         }
         if (!isExit) {
             User userSave = new User(user.getUsername(), user.getPassword(), false);
@@ -66,8 +68,10 @@ public class JwtAuthenController {
     public ResponseEntity<?> saveAms(@RequestBody RequestUser user) throws Exception {
         List<User> users = userService.findAll();
         boolean isExit = false;
-        for (User userFor : users) {
-            if (userFor.getUsername().equals(user.getUsername())) isExit = true;
+        if (users.size() > 0) {
+            for (User userFor : users) {
+                if (userFor.getUsername().equals(user.getUsername())) isExit = true;
+            }
         }
         if (!isExit) {
             User userSave = new User(user.getUsername(), user.getPassword(), true);
