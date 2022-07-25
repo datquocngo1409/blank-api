@@ -36,7 +36,6 @@ public class JwtAuthenController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
@@ -54,12 +53,12 @@ public class JwtAuthenController {
         for (User userFor : users) {
             if (userFor.getUsername().equals(user.getUsername())) isExit = true;
         }
-        if (isExit == false) {
+        if (!isExit) {
             User userSave = new User(user.getUsername(), user.getPassword());
             userService.createUser(userSave);
             return ResponseEntity.ok(userDetailsService.save(user));
         } else {
-            return ResponseEntity.ok(null);
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
