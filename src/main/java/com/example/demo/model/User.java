@@ -28,6 +28,7 @@ public class User {
     private String idNumber;
     private String avatarUrl;
     private String token;
+    private boolean isAms = false;
 
     public User() {
     }
@@ -35,5 +36,11 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, boolean isAms) {
+        this.username = username;
+        this.password = password;
+        this.isAms = isAms;
     }
 }

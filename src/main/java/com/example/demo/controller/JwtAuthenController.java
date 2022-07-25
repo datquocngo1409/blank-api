@@ -54,7 +54,23 @@ public class JwtAuthenController {
             if (userFor.getUsername().equals(user.getUsername())) isExit = true;
         }
         if (!isExit) {
-            User userSave = new User(user.getUsername(), user.getPassword());
+            User userSave = new User(user.getUsername(), user.getPassword(), false);
+            userService.createUser(userSave);
+            return ResponseEntity.ok(userDetailsService.save(user));
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @RequestMapping(value = "/createAms", method = RequestMethod.POST)
+    public ResponseEntity<?> saveAms(@RequestBody RequestUser user) throws Exception {
+        List<User> users = userService.findAll();
+        boolean isExit = false;
+        for (User userFor : users) {
+            if (userFor.getUsername().equals(user.getUsername())) isExit = true;
+        }
+        if (!isExit) {
+            User userSave = new User(user.getUsername(), user.getPassword(), true);
             userService.createUser(userSave);
             return ResponseEntity.ok(userDetailsService.save(user));
         } else {

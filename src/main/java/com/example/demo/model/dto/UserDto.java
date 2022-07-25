@@ -20,6 +20,7 @@ public class UserDto {
     private String idNumber;
     private String avatarUrl;
     private String token;
+    private boolean isAms;
 
     public UserDto() {}
 
@@ -37,5 +38,6 @@ public class UserDto {
         this.idNumber = user.getIdNumber();
         this.avatarUrl = user.getAvatarUrl();
         this.token = user.getToken();
+        this.isAms = user.isAms();
     }
 }
