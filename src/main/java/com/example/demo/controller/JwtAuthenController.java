@@ -43,7 +43,8 @@ public class JwtAuthenController {
         User user = userService.findByUsername(authenticationRequest.getUsername());
         user.setToken(token);
         userService.updateUser(user);
-        return ResponseEntity.ok(new JwtResponse(token));
+        user.setPassword("***********");
+        return ResponseEntity.ok(user);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
