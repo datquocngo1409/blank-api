@@ -5,6 +5,7 @@ import com.example.demo.model.JwtRequest;
 import com.example.demo.model.JwtResponse;
 import com.example.demo.model.RequestUser;
 import com.example.demo.model.User;
+import com.example.demo.model.requestDto.LoginFromAmsDto;
 import com.example.demo.service.JwtUserDetailsService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,24 @@ public class JwtAuthenController {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         User user = userService.findByUsername(authenticationRequest.getUsername());
+        user.setToken(token);
+        userService.updateUser(user);
+        user.setPassword("***********");
+        return ResponseEntity.ok(user);
+    }
+
+    @RequestMapping(value = "/ams/login", method = RequestMethod.POST)
+    public ResponseEntity<?> loginFromAms(@RequestBody LoginFromAmsDto requestDto) throws Exception {
+        User sysadminUser = userService.findByToken(requestDto.getAmsToken());
+        if (!sysadminUser.isAms()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        User loginUser = userService.findByUsername(requestDto.getUsername());
+        authenticate(loginUser.getUsername(), loginUser.getPassword());
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(loginUser.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        User user = userService.findByUsername(loginUser.getUsername());
         user.setToken(token);
         userService.updateUser(user);
         user.setPassword("***********");
